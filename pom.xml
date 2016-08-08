@@ -22,7 +22,7 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>ta-lib</groupId>
+			<groupId>com.tictactec</groupId>
 			<artifactId>ta-lib</artifactId>
 			<version>0.4.0</version>
 		</dependency>
