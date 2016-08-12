@@ -1,18 +1,18 @@
 package com.mm.chaos.prob.ana.intraday.analyse.bar;
 
 import java.text.DecimalFormat;
+import java.util.logging.Logger;
 
 import org.lst.trading.lib.series.BarSeries;
 
-import com.mm.chaos.prob.ana.intraday.data.MACDDTO;
 import com.mm.chaos.prob.ana.intraday.data.SMADTO;
-import com.mm.chaos.prob.utils.CHAOS_Utils;
 import com.tictactec.ta.lib.Core;
 import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
 
 public class ANAPatternSMACalc 
 {
+	Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	DecimalFormat df = new DecimalFormat("#.##");
 	//TA LIB Handle
@@ -43,14 +43,22 @@ public class ANAPatternSMACalc
     	double smaShort[]   = new double[close.length];
     	double smaLong[] = new double[close.length];
     	
+    	
     	//for smashort calculation
         retCode = lib.sma(0,close.length-1,close,10,outBegIdxSMAShort,outNBElementSMAShort,smaShort);
-
+        
+        if(outNBElementSMAShort.value > 0)
+        	log.fine("SMA SHORT : " + smaShort[outNBElementSMAShort.value-1]);
+        
     	//for SMA LONG calculation
         retCode = lib.sma(0,close.length-1,close,20,outBegIdxSMALong,outNBElementSMALong,smaLong);
         
-        System.out.println("outBegIdxSMAShort : " + outBegIdxSMAShort.value + ", outNBElementSMAShort : " + outNBElementSMAShort.value);
-        System.out.println("outBegIdxSMALong : " + outBegIdxSMALong.value + ", outNBElementSMALong : " + outNBElementSMALong.value);
+        if(outNBElementSMALong.value > 0)
+        	log.fine("SMA LONG : " + smaShort[outNBElementSMALong.value-1]);
+        
+        
+//        System.out.println("outBegIdxSMAShort : " + outBegIdxSMAShort.value + ", outNBElementSMAShort : " + outNBElementSMAShort.value);
+//        System.out.println("outBegIdxSMALong : " + outBegIdxSMALong.value + ", outNBElementSMALong : " + outNBElementSMALong.value);
 //        
 //        if(outNBElement.value > 4)
 //        {

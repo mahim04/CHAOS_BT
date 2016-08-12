@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.lst.trading.lib.model.Bar;
 import org.lst.trading.lib.model.ClosedOrder;
 import org.lst.trading.lib.model.TradingStrategy;
@@ -100,14 +101,16 @@ public class BarBacktest {
 
     TradingStrategy<Bar> mStrategy;
     BarBacktestTradingContext mContext;
+    private DateTime tradingStartDay = new DateTime();
 
     Iterator<TimeSeries.Entry<Bar>> mPriceIterator;
     Result mResult;
 
-    public BarBacktest(double deposit, BarSeries priceSeries) {
+    public BarBacktest(DateTime tradingStartDay, double deposit, BarSeries priceSeries) {
         check(priceSeries.isAscending());
         this.mDeposit = deposit;
         this.mPriceSeries = priceSeries;
+        this.tradingStartDay = tradingStartDay;
     }
 
     public void setLeverage(double leverage) {
@@ -126,7 +129,7 @@ public class BarBacktest {
 
     public void initialize(TradingStrategy<Bar> strategy) {
         mStrategy = strategy;
-        mContext = new BarBacktestTradingContext(mPriceSeries.getName(), mDeposit, mCommission, mPriceSeries, mLeverage);
+        mContext = new BarBacktestTradingContext(tradingStartDay, mPriceSeries.getName(), mDeposit, mCommission, mPriceSeries, mLeverage);
 
 //        mContext.mInstrument = mPriceSeries.getName();
 //        mContext.mInitialFunds = mDeposit;

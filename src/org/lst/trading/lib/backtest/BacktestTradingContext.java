@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.lst.trading.lib.model.ClosedOrder;
 import org.lst.trading.lib.model.Order;
 import org.lst.trading.lib.model.TradingContext;
@@ -189,6 +190,12 @@ class BacktestTradingContext implements TradingContext<DoubleSeries> {
 
 	@Override
 	public BarSeries getHistory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DateTime getTradingStartDay() {
 		// TODO Auto-generated method stub
 		return null;
 	}

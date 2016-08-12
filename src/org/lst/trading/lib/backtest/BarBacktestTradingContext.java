@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.lst.trading.lib.model.Bar;
 import org.lst.trading.lib.model.ClosedOrder;
 import org.lst.trading.lib.model.Order;
@@ -17,6 +18,7 @@ import org.lst.trading.lib.series.TimeSeries.Entry;
 class BarBacktestTradingContext implements TradingContext<Bar> 
 {
 	
+	private DateTime tradingStartDay = new DateTime();
 	
     private Instant mInstant;
     private BarSeries mPrices;
@@ -30,7 +32,7 @@ class BarBacktestTradingContext implements TradingContext<Bar>
     
     
     
-    public BarBacktestTradingContext(String mInstrument, double mInitialFunds, double mCommissions, BarSeries mPrices, double mLeverage) 
+    public BarBacktestTradingContext(DateTime tradingStartDay, String mInstrument, double mInitialFunds, double mCommissions, BarSeries mPrices, double mLeverage) 
     {
 		super();
 		this.mInstrument = mInstrument;
@@ -38,6 +40,7 @@ class BarBacktestTradingContext implements TradingContext<Bar>
 		this.mCommissions = mCommissions;
 		this.mPrices = mPrices;
 		this.mLeverage = mLeverage;
+		this.tradingStartDay = tradingStartDay;
 	}
 
 	//This is for current value of Bar we are backtesting for
@@ -187,5 +190,14 @@ class BarBacktestTradingContext implements TradingContext<Bar>
 	public BarSeries getHistory() {
 		return mHistoryBars;
 	}
+
+	@Override
+	public DateTime getTradingStartDay() {
+		return tradingStartDay;
+	}
+	
+	
+	
+	
 }
 

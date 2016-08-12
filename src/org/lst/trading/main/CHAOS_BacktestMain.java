@@ -5,7 +5,12 @@ import static java.lang.String.format;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.lst.trading.lib.backtest.BarBacktest;
 import org.lst.trading.lib.model.Bar;
 import org.lst.trading.lib.model.ClosedOrder;
@@ -14,12 +19,33 @@ import org.lst.trading.lib.series.BarSeries;
 import org.lst.trading.lib.series.MultipleDoubleSeries;
 import org.lst.trading.lib.util.Util;
 import org.lst.trading.lib.util.chaos.CHAOSFinance;
-import org.lst.trading.main.strategy.*;
+import org.lst.trading.main.strategy.BarSMATradingStrategy;
 
 import com.mm.chaos.prob.utils.CHAOS_Utils;
 
-public class CHAOS_BacktestMain {
-    public static void main(String[] args) throws URISyntaxException, IOException {
+public class CHAOS_BacktestMain 
+{
+	
+	Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	
+	
+    public CHAOS_BacktestMain() {
+		super();
+		
+		String logLevel  = System.getenv("LOGLEVEL");
+		if(logLevel !=null)
+		{
+			log.setLevel(Level.parse(logLevel));
+		}
+	}
+
+	public static void main(String[] args) throws URISyntaxException, IOException 
+    {
+    	
+    	//Trading start day is required because this will ensure we have a consistent output compared to google api which uses 
+    	//last day carry forward data.
+    	DateTime tradingStartDay = parseTradingStartDay(args[0]);
+    	
         // initialize the trading strategy
 //        TradingStrategy strategy = new CointegrationTradingStrategy(x, y);
         TradingStrategy<Bar> strategy = new BarSMATradingStrategy<Bar>();
@@ -31,7 +57,7 @@ public class CHAOS_BacktestMain {
         
         // initialize the backtesting engine
         int deposit = 100000;
-        BarBacktest barBackTest = new BarBacktest(deposit, barSeries);
+        BarBacktest barBackTest = new BarBacktest(tradingStartDay, deposit, barSeries);
         barBackTest.setLeverage(1);
 
         // do the backtest
@@ -59,4 +85,12 @@ public class CHAOS_BacktestMain {
         System.out.println("Orders: " + Util.writeStringToTempFile(orders.toString()));
         System.out.println("Statistics: " + Util.writeCsv(new MultipleDoubleSeries(result.getPlHistory(), result.getMarginHistory())));
     }
+    
+    private static DateTime parseTradingStartDay(String s)
+    {
+    	System.out.println("Parsing " + s);
+    	DateTimeFormatter formatter = DateTimeFormat.forPattern("dd-MM-yyyy");
+    	return formatter.parseDateTime(s);
+    }
+    
 }

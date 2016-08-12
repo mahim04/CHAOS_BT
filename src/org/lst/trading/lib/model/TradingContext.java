@@ -3,6 +3,7 @@ package org.lst.trading.lib.model;
 import java.time.Instant;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.lst.trading.lib.backtest.SimpleClosedOrder;
 import org.lst.trading.lib.backtest.SimpleOrder;
 import org.lst.trading.lib.series.BarSeries;
@@ -55,5 +56,7 @@ public interface TradingContext<T> {
     void addtoPL(Double pl, Instant instant);
     
     void addtoFundsHistory(Double funds, Instant instant);
+    
+    DateTime getTradingStartDay();
    
 }
