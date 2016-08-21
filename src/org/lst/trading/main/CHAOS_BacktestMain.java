@@ -4,6 +4,7 @@ import static java.lang.String.format;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,8 +20,9 @@ import org.lst.trading.lib.series.BarSeries;
 import org.lst.trading.lib.series.MultipleDoubleSeries;
 import org.lst.trading.lib.util.Util;
 import org.lst.trading.lib.util.chaos.CHAOSFinance;
-import org.lst.trading.main.strategy.BarSMATradingStrategy;
+import org.lst.trading.main.strategy.BarSMA_RSITradingStrategy;
 
+import com.mm.chaos.prob.calculators.RSICalculator;
 import com.mm.chaos.prob.utils.CHAOS_Utils;
 
 public class CHAOS_BacktestMain 
@@ -48,12 +50,12 @@ public class CHAOS_BacktestMain
     	
         // initialize the trading strategy
 //        TradingStrategy strategy = new CointegrationTradingStrategy(x, y);
-        TradingStrategy<Bar> strategy = new BarSMATradingStrategy<Bar>();
+        TradingStrategy<Bar> strategy = new BarSMA_RSITradingStrategy<Bar>();
 
         // download historical prices
         CHAOSFinance chaosFin = new CHAOSFinance();
         BarSeries barSeries = chaosFin.getHistoricalAdjustedPricesinBar("NIFTY").toBlocking().first();
-
+        
         
         // initialize the backtesting engine
         int deposit = 100000;
