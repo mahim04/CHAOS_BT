@@ -49,7 +49,7 @@ public class ANAPatternSMA_RSI_Calc
 	
 	public SMADTO calculate()
 	{
-		System.err.println("MM-- hack");
+//		System.err.println("MM-- hack");
 		double[] close = data.getClosePrices();
 		
     	double smaShort[]   = new double[close.length];
@@ -81,11 +81,13 @@ public class ANAPatternSMA_RSI_Calc
         ArrayList<Double> rsi  = rsiCalc.calculateRSI();
         		
         
-        
-        for(int i=0; i<rsi.size();i++)
+        if(rsi.size() > periodLength+5)
         {
-        	Bar bar = data.get(periodLength + i).getItem();
-        	System.out.println("RSI[" + bar + "]RSI:" + rsi.get(i));
+	        for(int i=rsi.size()-5; i<rsi.size();i++)
+	        {
+	        	Bar bar = data.get(periodLength + i).getItem();
+	        	System.out.println("RSI[" + bar + "] RSI:" + rsi.get(i));
+	        }
         }
         
         
